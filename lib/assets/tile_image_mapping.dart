@@ -1,0 +1,38 @@
+Map<String, String> tileImageMapping = {
+  'Sweden': 'assets/images/countryimages/sweden.png',
+  'Kenya': 'assets/images/countryimages/kenya.png',
+  'UK': 'assets/images/countryimages/UK.png',
+  'Kerala': 'assets/images/countryimages/kerala.png',
+  'Morocco': 'assets/images/countryimages/morocco.png',
+  'Austria': 'assets/images/countryimages/australia.png',
+  'London': 'assets/images/countryimages/london.png',
+  'Norway': 'assets/images/countryimages/norway.png',
+  'Berlin': 'assets/images/countryimages/berlin.png',
+  'Nepal': 'assets/images/countryimages/nepal.png',
+  'Seoul': 'assets/images/countryimages/korea.png',
+  'Spain': 'assets/images/countryimages/spain.png',
+  'Brazil': 'assets/images/countryimages/brazil.png',
+  'Athens': 'assets/images/countryimages/athens.png',
+  'Bangkok': 'assets/images/countryimages/bangkok.png',
+  'NewYork': 'assets/images/countryimages/newyork.png',
+  'Japan': 'assets/images/countryimages/japan.png',
+  'Lisbon': 'assets/images/countryimages/lisbon.png',
+  'Egypt': 'assets/images/countryimages/egypt.png',
+  'Iceland': 'assets/images/countryimages/iceland.png',
+  'Bali': 'assets/images/countryimages/bali.png',
+  'Paris': 'assets/images/countryimages/paris.png',
+  'China': 'assets/images/countryimages/china.png',
+  'Mexico': 'assets/images/countryimages/mexico.png',
+  'Venice': 'assets/images/countryimages/venice.png',
+  'Vegas': 'assets/images/countryimages/lasvegas.png',
+  'Rome': 'assets/images/countryimages/rome.png',
+  'Tokyo': 'assets/images/countryimages/tokyo.png',
+  'India': 'assets/images/countryimages/india.png',
+  'Moscow': 'assets/images/countryimages/moscow.png',
+  'Chile': 'assets/images/countryimages/chile.png',
+  'Dubai': 'assets/images/countryimages/dubai.png',
+};
+
+String getTileImage(String tileName) {
+  return tileImageMapping[tileName] ?? 'assets/images/default_property.jpg';
+}

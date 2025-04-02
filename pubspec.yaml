@@ -1,0 +1,45 @@
+name: business_game
+description: "A new Flutter project."
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  audioplayers: ^5.2.1
+  flip_card: ^0.7.0
+  cupertino_icons: ^1.0.8
+  provider: ^6.1.2
+  firebase_core: ^3.12.1
+  firebase_storage: ^12.4.4
+  firebase_auth: ^5.5.1
+  cloud_firestore: ^5.6.5
+  google_sign_in: ^6.3.0
+  flutter_launcher_icons: ^0.14.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+
+flutter:
+  assets:
+    - assets/audio/rolling-dice.mp3
+    - assets/audio/themeSong.mp3
+    - assets/images/
+    - assets/images/dice/
+    - assets/images/countryimages/
+    - assets/images/logo/
+    - assets/images/tileimages/
+    - assets/images/avatar/
+
+  uses-material-design: true
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo/logo_icon.PNG"
