@@ -7,12 +7,27 @@ class Settings extends StatefulWidget {
   const Settings({super.key});
 
   @override
-  _SettingsState createState() => _SettingsState();
+  SettingsState createState() => SettingsState();
 }
 
-class _SettingsState extends State<Settings> {
-  double _volume = AudioService.volume;
-  bool _isMuted = AudioService.isMuted;
+class SettingsState extends State<Settings> {
+  double _volume = 1.0;
+  bool _isMuted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAudioSettings();
+  }
+
+  /// Load audio settings from SharedPreferences
+  Future<void> _loadAudioSettings() async {
+    await AudioService.init(); // Ensure values are loaded
+    setState(() {
+      _volume = AudioService.volume;
+      _isMuted = AudioService.isMuted;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +53,11 @@ class _SettingsState extends State<Settings> {
                 title: "Mute Sounds",
                 trailing: Switch(
                   value: _isMuted,
-                  onChanged: (value) {
+                  onChanged: (value) async {
                     setState(() {
                       _isMuted = value;
-                      AudioService.toggleMute();
                     });
+                    await AudioService.toggleMute(); // Save the mute setting
                   },
                 ),
               ),
@@ -67,11 +82,11 @@ class _SettingsState extends State<Settings> {
                         min: 0,
                         max: 1,
                         activeColor: Colors.blueAccent,
-                        onChanged: (value) {
+                        onChanged: (value) async {
                           setState(() {
                             _volume = value;
-                            AudioService.setVolume(_volume);
                           });
+                          await AudioService.setVolume(_volume); // Save volume
                         },
                       ),
                     ],

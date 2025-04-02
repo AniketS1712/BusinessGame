@@ -64,7 +64,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '631482665751',
     projectId: 'business-game-efb38',
     storageBucket: 'business-game-efb38.firebasestorage.app',
-    iosClientId: '631482665751-stdbjj3ej7u4agk6lmt17r154sq4vmdc.apps.googleusercontent.com',
+    iosClientId:
+        '631482665751-stdbjj3ej7u4agk6lmt17r154sq4vmdc.apps.googleusercontent.com',
     iosBundleId: 'com.example.businessGame',
   );
 
@@ -74,7 +75,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '631482665751',
     projectId: 'business-game-efb38',
     storageBucket: 'business-game-efb38.firebasestorage.app',
-    iosClientId: '631482665751-stdbjj3ej7u4agk6lmt17r154sq4vmdc.apps.googleusercontent.com',
+    iosClientId:
+        '631482665751-stdbjj3ej7u4agk6lmt17r154sq4vmdc.apps.googleusercontent.com',
     iosBundleId: 'com.example.businessGame',
   );
 
@@ -87,5 +89,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'business-game-efb38.firebasestorage.app',
     measurementId: 'G-KCJFP221D0',
   );
-
 }

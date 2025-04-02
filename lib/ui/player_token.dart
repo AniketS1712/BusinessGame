@@ -94,7 +94,7 @@ void handleTileAction(BuildContext context, Player player, int dice1, int dice2,
         showChanceDialog(context, player);
       });
       break;
-      case TileType.resthouse:
+    case TileType.resthouse:
       break;
     case TileType.jail:
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -104,12 +104,17 @@ void handleTileAction(BuildContext context, Player player, int dice1, int dice2,
       });
       break;
     case TileType.club:
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        showClubBetSelectionDialog(context, (selectedAmount) {
-          gameController.handleClubTile(player, context, selectedAmount);
+      if (!gameController.isClubDialogOpen) {
+        gameController.isClubDialogOpen = true;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          showClubBetSelectionDialog(context, (selectedAmount) {
+            gameController.handleClubTile(player, context, selectedAmount);
+            gameController.isClubDialogOpen = false;
+          });
         });
-      });
+      }
       break;
+
     case TileType.property:
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showPropertyDetails(context, tile, player, gameController);

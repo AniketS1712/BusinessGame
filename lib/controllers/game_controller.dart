@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../models/player.dart';
 
 class GameController extends ChangeNotifier {
+  bool isClubDialogOpen = false;
   final List<Player> players;
   int currentPlayerIndex = 0;
   int dice1 = 1;
@@ -68,6 +69,7 @@ class GameController extends ChangeNotifier {
       notifyListeners();
     }
   }
+
   void handleJail(Player player, bool isFree) {
     if (!isFree) {
       playersInJail.add(player);
@@ -75,6 +77,7 @@ class GameController extends ChangeNotifier {
       playersInJail.remove(player);
     }
   }
+
   //Handle player money when they land on a club tile
   void handleClubTile(
       Player currentPlayer, BuildContext context, int betAmount) {

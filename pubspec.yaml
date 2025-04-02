@@ -19,6 +19,8 @@ dependencies:
   cloud_firestore: ^5.6.5
   google_sign_in: ^6.3.0
   flutter_launcher_icons: ^0.14.3
+  lottie: ^2.3.2
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:
@@ -36,6 +38,7 @@ flutter:
     - assets/images/logo/
     - assets/images/tileimages/
     - assets/images/avatar/
+    - assets/animations/
 
   uses-material-design: true
 

@@ -82,7 +82,7 @@ class About extends StatelessWidget {
   // Section Card Widget
   Widget _sectionCard(String title, dynamic content) {
     return Card(
-      color: Colors.black.withOpacity(0.6),
+      color: Colors.black.withAlpha(140),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       margin: const EdgeInsets.only(bottom: 20),
       child: Padding(
@@ -157,7 +157,7 @@ class About extends StatelessWidget {
         borderRadius: BorderRadius.circular(50),
         child: CircleAvatar(
           radius: 22,
-          backgroundColor: Colors.amber.withOpacity(0.8),
+          backgroundColor: Colors.amber.withAlpha(200),
           child: Icon(icon, color: Colors.black, size: 26),
         ),
       ),

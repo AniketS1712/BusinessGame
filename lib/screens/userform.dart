@@ -7,10 +7,10 @@ class UserForm extends StatefulWidget {
   const UserForm({super.key});
 
   @override
-  _UserForm createState() => _UserForm();
+  UserFormState createState() => UserFormState();
 }
 
-class _UserForm extends State<UserForm> {
+class UserFormState extends State<UserForm> {
   final TextEditingController _nameController = TextEditingController();
 
   Future<void> _submitForm() async {
