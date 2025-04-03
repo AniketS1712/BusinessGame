@@ -17,6 +17,7 @@ class ProfileState extends State<Profile> {
   String gender = "";
   int totalGamesPlayed = 0;
   int totalGamesWon = 0;
+  // ignore: unused_field
   bool _isLoading = true;
 
   final List<String> availableAvatars = [
