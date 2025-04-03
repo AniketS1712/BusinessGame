@@ -18,7 +18,6 @@ class TileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tile = tiles[tileIndex];
-
     final bool isSpecialTile = tile.type == TileType.incometax ||
         tile.type == TileType.chance ||
         tile.type == TileType.wealthtax;
@@ -66,31 +65,40 @@ class TileWidget extends StatelessWidget {
                           // Price Section
                           if (tile.price > 0)
                             Container(
-                              height: width / 3,
+                              height: width / 2.5,
+                              width: height,
                               alignment: Alignment.center,
-                              child: Text(
-                                '₹${tile.price}',
-                                style: TextStyle(
-                                  fontSize: 7,
-                                  fontWeight: FontWeight.w900,
-                                  color: Colors.white,
+                              child: FittedBox(
+                                fit: BoxFit.contain,
+                                child: Text.rich(
+                                  TextSpan(
+                                    text: '₹${tile.price}',
+                                    style: TextStyle(
+                                      fontSize: width / 2,
+                                      fontWeight: FontWeight.w900,
+                                      color: Colors.black,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                           // Label Section
                           Container(
-                            height: width / 3,
+                            height: width / 2.5,
+                            width: height,
                             alignment: Alignment.center,
-                            child: Text(
-                              tile.label,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 6,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
+                            child: FittedBox(
+                              fit: BoxFit.contain,
+                              child: Text.rich(
+                                TextSpan(
+                                  text: tile.label,
+                                  style: TextStyle(
+                                    fontSize: width / 3,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black,
+                                  ),
+                                ),
                               ),
-                              softWrap: true,
-                              maxLines: 2,
                             ),
                           ),
                         ],

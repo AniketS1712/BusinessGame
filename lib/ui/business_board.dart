@@ -20,10 +20,12 @@ class BusinessBoard extends StatelessWidget {
     final gameController = Provider.of<GameController>(context, listen: false);
     final players = gameController.players;
 
-    final Size boardsize = MediaQuery.sizeOf(context) * 0.9;
-    final double width = boardsize.width / 13;
-    final double height = boardsize.width / 6.5;
-    final double cornertilesize = (boardsize.width / 13) * 2;
+    final double maxBoardSize = 600;
+    final double boardsize =
+        math.min(MediaQuery.sizeOf(context).width * 0.9, maxBoardSize);
+    final double width = boardsize / 13;
+    final double height = boardsize / 6.5;
+    final double cornertilesize = (boardsize / 13) * 2;
 
     return Scaffold(
       body: Stack(
@@ -41,12 +43,12 @@ class BusinessBoard extends StatelessWidget {
           ),
           Center(
             child: SizedBox(
-              width: boardsize.width,
-              height: boardsize.width,
+              width: boardsize,
+              height: boardsize,
               child: Stack(
                 children: [
                   BoardLayout(
-                    boardSize: boardsize.width,
+                    boardSize: boardsize,
                     height: height,
                     width: width,
                     cornertilesize: cornertilesize,
@@ -60,7 +62,7 @@ class BusinessBoard extends StatelessWidget {
                     ),
                   ),
                   PlayerToken(
-                    boardSize: boardsize.width,
+                    boardSize: boardsize,
                     players: players,
                     currentPlayerIndex: gameController.currentPlayerIndex,
                     gameController: gameController,

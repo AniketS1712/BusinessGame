@@ -20,9 +20,8 @@ class SettingsState extends State<Settings> {
     _loadAudioSettings();
   }
 
-  /// Load audio settings from SharedPreferences
   Future<void> _loadAudioSettings() async {
-    await AudioService.init(); // Ensure values are loaded
+    await AudioService.init();
     setState(() {
       _volume = AudioService.volume;
       _isMuted = AudioService.isMuted;
@@ -57,11 +56,10 @@ class SettingsState extends State<Settings> {
                     setState(() {
                       _isMuted = value;
                     });
-                    await AudioService.toggleMute(); // Save the mute setting
+                    await AudioService.toggleMute();
                   },
                 ),
               ),
-              // Volume Slider Card
               Card(
                 elevation: 4,
                 shape: RoundedRectangleBorder(
@@ -86,7 +84,7 @@ class SettingsState extends State<Settings> {
                           setState(() {
                             _volume = value;
                           });
-                          await AudioService.setVolume(_volume); // Save volume
+                          await AudioService.setVolume(_volume);
                         },
                       ),
                     ],

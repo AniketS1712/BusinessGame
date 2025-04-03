@@ -12,8 +12,9 @@ class Profile extends StatefulWidget {
 
 class ProfileState extends State<Profile> {
   String uid = FirebaseAuth.instance.currentUser?.uid ?? '';
-  String name = 'Guest';
+  String name = '';
   String profilePicUrl = '';
+  String gender = "";
   int totalGamesPlayed = 0;
   int totalGamesWon = 0;
   bool _isLoading = true;
@@ -38,13 +39,15 @@ class ProfileState extends State<Profile> {
     try {
       DocumentSnapshot userDoc =
           await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      debugPrint("Fetched user data: ${userDoc.data()}");
 
       if (userDoc.exists) {
         setState(() {
           name = userDoc['name'];
-          profilePicUrl = userDoc['profilePic'];
-          totalGamesPlayed = userDoc['totalGamesPlayed'];
-          totalGamesWon = userDoc['totalGamesWon'];
+          profilePicUrl = userDoc['avatar'] ?? '';
+          gender = userDoc['gender'] ?? '';
+          totalGamesPlayed = userDoc['totalGamesPlayed'] ?? 0;
+          totalGamesWon = userDoc['totalGamesWon'] ?? 0;
         });
       }
     } catch (e) {
@@ -96,14 +99,12 @@ class ProfileState extends State<Profile> {
 
     try {
       await FirebaseFirestore.instance.collection('users').doc(uid).update({
-        'profilePic': avatar,
+        'avatar ': avatar,
       });
 
       setState(() {
-        profilePicUrl = avatar;
+        profilePicUrl = avatar; // Update immediately in UI
       });
-
-      await _fetchUserDetails();
     } catch (e) {
       debugPrint("Error updating profile picture: $e");
     }
@@ -122,27 +123,51 @@ class ProfileState extends State<Profile> {
       body: Container(
         decoration: _buildGradientBackground(),
         child: SafeArea(
-          child: _isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : Column(
-                  children: [
-                    const SizedBox(height: 20),
-
-                    // Profile Card
-                    _buildProfileCard(),
-
-                    const SizedBox(height: 20),
-
-                    // Game Stats Section
-                    _buildGameStats(),
-
-                    const SizedBox(height: 100),
-
-                    // Large Profile Avatar
-                    _buildLargeAvatar(),
-                  ],
-                ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return constraints.maxHeight > 650
+                  ? _buildFixedLayout()
+                  : _buildScrollableLayout();
+            },
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildFixedLayout() {
+    return Column(
+      children: [
+        const SizedBox(height: 20),
+        _buildProfileCard(),
+        const SizedBox(height: 20),
+        _buildGameStats(),
+        Expanded(
+          // This replaces Spacer() for better dynamic spacing
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: _buildLargeAvatar(),
+          ),
+        ),
+        const SizedBox(height: 20),
+      ],
+    );
+  }
+
+  Widget _buildScrollableLayout() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const SizedBox(height: 20),
+          _buildProfileCard(),
+          const SizedBox(height: 20),
+          _buildGameStats(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: _buildLargeAvatar(),
+          ),
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }
@@ -190,8 +215,7 @@ class ProfileState extends State<Profile> {
                       radius: 50,
                       backgroundImage: profilePicUrl.isNotEmpty
                           ? AssetImage(profilePicUrl)
-                          : const AssetImage('assets/images/avatar/avatar1.jpg')
-                              as ImageProvider,
+                          : null,
                     ),
                     const CircleAvatar(
                       radius: 16,
@@ -208,6 +232,12 @@ class ProfileState extends State<Profile> {
             Text(
               name,
               style: const TextStyle(fontSize: 20, color: Colors.white),
+            ),
+
+            // Gender
+            Text(
+              "Gender: $gender",
+              style: const TextStyle(fontSize: 16, color: Colors.grey),
             ),
 
             // UID (Copyable)
@@ -263,15 +293,21 @@ class ProfileState extends State<Profile> {
     );
   }
 
-  // 🔹 Large Profile Avatar
   Widget _buildLargeAvatar() {
-    return CircleAvatar(
-      radius: MediaQuery.of(context).size.width * 0.3,
-      backgroundColor: Colors.white,
-      backgroundImage: profilePicUrl.isNotEmpty
-          ? AssetImage(profilePicUrl)
-          : const AssetImage('assets/images/avatar/avatar1.jpg')
-              as ImageProvider,
+    return Flexible(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.8,
+        height: MediaQuery.of(context).size.width * 0.5,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          image: profilePicUrl.isNotEmpty
+              ? DecorationImage(
+                  image: AssetImage(profilePicUrl),
+                  fit: BoxFit.contain,
+                )
+              : null,
+        ),
+      ),
     );
   }
 }

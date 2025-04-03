@@ -61,26 +61,58 @@ class MainMenu extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 30),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _menuButton("Play", Icons.play_arrow, () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const GameScreen()));
-                    }),
-                    _menuButton("Friends", Icons.group, () {}),
-                    _menuButton("About", Icons.info_outline, () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const About()),
-                      );
-                    }),
-                  ],
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    bool isWide = constraints.maxWidth >
+                        600; // Adjust breakpoint as needed
+
+                    return isWide
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              _menuButton("Play", Icons.play_arrow, () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const GameScreen()));
+                              }),
+                              const SizedBox(width: 20),
+                              _menuButton("Friends", Icons.group, () {}),
+                              const SizedBox(width: 20),
+                              _menuButton("About", Icons.info_outline, () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const About()),
+                                );
+                              }),
+                            ],
+                          )
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              _menuButton("Play", Icons.play_arrow, () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const GameScreen()));
+                              }),
+                              _menuButton("Friends", Icons.group, () {}),
+                              _menuButton("About", Icons.info_outline, () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const About()),
+                                );
+                              }),
+                            ],
+                          );
+                  },
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),
