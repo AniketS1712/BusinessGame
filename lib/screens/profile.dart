@@ -99,11 +99,11 @@ class ProfileState extends State<Profile> {
 
     try {
       await FirebaseFirestore.instance.collection('users').doc(uid).update({
-        'avatar ': avatar,
+        'avatar': avatar,
       });
 
       setState(() {
-        profilePicUrl = avatar; // Update immediately in UI
+        profilePicUrl = avatar;
       });
     } catch (e) {
       debugPrint("Error updating profile picture: $e");
@@ -142,12 +142,9 @@ class ProfileState extends State<Profile> {
         _buildProfileCard(),
         const SizedBox(height: 20),
         _buildGameStats(),
-        Expanded(
-          // This replaces Spacer() for better dynamic spacing
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: _buildLargeAvatar(),
-          ),
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: _buildLargeAvatar(),
         ),
         const SizedBox(height: 20),
       ],
@@ -194,7 +191,6 @@ class ProfileState extends State<Profile> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            // Profile Picture with Edit Button
             GestureDetector(
               onTap: _showAvatarSelectionSheet,
               child: Container(
@@ -294,19 +290,17 @@ class ProfileState extends State<Profile> {
   }
 
   Widget _buildLargeAvatar() {
-    return Flexible(
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.8,
-        height: MediaQuery.of(context).size.width * 0.5,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          image: profilePicUrl.isNotEmpty
-              ? DecorationImage(
-                  image: AssetImage(profilePicUrl),
-                  fit: BoxFit.contain,
-                )
-              : null,
-        ),
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.8,
+      height: MediaQuery.of(context).size.width * 0.5,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        image: profilePicUrl.isNotEmpty
+            ? DecorationImage(
+                image: AssetImage(profilePicUrl),
+                fit: BoxFit.contain,
+              )
+            : null,
       ),
     );
   }

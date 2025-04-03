@@ -10,9 +10,13 @@ class AuthService {
 
   // Sign in with Google
   Future<User?> signInWithGoogle() async {
+    GoogleSignIn googleSignIn = GoogleSignIn(
+      clientId:
+          "631482665751-52p7e5vbusp3u2ebnnj2um1s29r4klqn.apps.googleusercontent.com",
+    );
     try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) return null; // User canceled login
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      if (googleUser == null) return null;
 
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
@@ -27,7 +31,6 @@ class AuthService {
       final User? user = userCredential.user;
 
       if (user != null) {
-        // Create or update user in Firestore
         await _firestore.collection("users").doc(user.uid).set({
           "uid": user.uid,
           "name": user.displayName ?? "Unknown",
@@ -36,7 +39,7 @@ class AuthService {
           "totalGamesPlayed": 0,
           "totalGamesWon": 0,
           "createdAt": FieldValue.serverTimestamp(),
-          "lastLogin": FieldValue.serverTimestamp(), // Track last login time
+          "lastLogin": FieldValue.serverTimestamp(),
         }, SetOptions(merge: true));
       }
 
@@ -55,7 +58,6 @@ class AuthService {
       final User? user = userCredential.user;
 
       if (user != null) {
-        // Create or update anonymous user data in Firestore
         await _firestore.collection("users").doc(user.uid).set({
           "uid": user.uid,
           "name": "Guest User",
