@@ -71,7 +71,7 @@ void showClubDiceRollingDialog(BuildContext context, List<Player> players,
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
+                      color: Colors.black.withAlpha(50),
                       blurRadius: 10,
                       spreadRadius: 2,
                     ),

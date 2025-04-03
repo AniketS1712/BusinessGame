@@ -12,16 +12,9 @@ class MainMenu extends StatelessWidget {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Colors.blue.shade300,
-              Colors.blue.shade100,
-              Colors.blue.shade100,
-              Colors.blue.shade100,
-              Colors.blue.shade300,
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+          image: DecorationImage(
+            image: AssetImage('assets/images/mainmenu_background.jpg'),
+            fit: BoxFit.fill,
           ),
         ),
         child: Column(
@@ -50,37 +43,19 @@ class MainMenu extends StatelessWidget {
             ),
 
             // Logo Section
-            Expanded(
-              flex: 1,
-              child: Center(
-                child: Container(
-                  width: 350,
-                  height: 250,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withAlpha(90),
-                        blurRadius: 10,
-                        spreadRadius: 3,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                    border: Border.all(
-                      color: Colors.white.withAlpha(100),
-                      width: 2,
-                    ),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.asset(
-                      'assets/images/logo/logo_widelong.PNG',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+            SizedBox(
+              width: 380,
+              height: 120,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.asset(
+                  'assets/images/logo/Logo_widest.PNG',
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
+
+            const Spacer(),
 
             // Buttons Section
             Expanded(
@@ -132,13 +107,17 @@ class MainMenu extends StatelessWidget {
             ),
           ),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.orange.shade600,
+            backgroundColor: Colors.teal.shade900,
             padding: const EdgeInsets.symmetric(vertical: 16),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(12),
+              side: BorderSide(
+                color: Colors.white.withAlpha(200),
+                width: 1,
+              ),
             ),
-            elevation: 7,
-            shadowColor: Colors.black.withAlpha(250),
+            elevation: 6,
+            shadowColor: Colors.white,
           ),
           onPressed: onPressed,
         ),
@@ -148,7 +127,7 @@ class MainMenu extends StatelessWidget {
 
   Widget _iconButton(IconData icon, VoidCallback onPressed) {
     return IconButton(
-      icon: Icon(icon, color: Colors.black87, size: 30),
+      icon: Icon(icon, color: Colors.white, size: 30),
       onPressed: onPressed,
     );
   }
