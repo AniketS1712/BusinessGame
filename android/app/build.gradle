@@ -36,6 +36,7 @@ android {
 
     buildTypes {
         release {
+            storeFile file("key.jks")
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
