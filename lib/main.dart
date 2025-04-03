@@ -52,7 +52,6 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => GameController(players),
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
         home: SplashScreen(),
       ),
     );

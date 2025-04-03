@@ -40,7 +40,6 @@ class ProfileState extends State<Profile> {
     try {
       DocumentSnapshot userDoc =
           await FirebaseFirestore.instance.collection('users').doc(uid).get();
-      debugPrint("Fetched user data: ${userDoc.data()}");
 
       if (userDoc.exists) {
         setState(() {
