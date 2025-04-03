@@ -9,8 +9,11 @@ import 'package:business_game/models/player.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  AudioService.play('audio/themeSong.mp3');
+  await AudioService.init();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  if (!AudioService.isMuted) {
+    AudioService.play('audio/themeSong.mp3');
+  }
   runApp(const MyApp());
 }
 
