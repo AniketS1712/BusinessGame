@@ -5,7 +5,7 @@ A fun and strategic **local multiplayer business board game** where players comp
 ## 📥 Download & Install  
 
 ### **🔗 Direct Download from Itch.io (Recommended)**  
-🚀 [Download the game from Itch.io]([https://aniket17.itch.io/business-game](https://1drv.ms/u/c/4e46ae5a28a8b6c9/EeC9mQk6j4tEmMhoL_Jm_jgBt3Q74ZgJ2kVT0_J7ASh3xA?e=koRlzA))  
+🚀 [Download the game from Itch.io]([https://1drv.ms/u/c/4e46ae5a28a8b6c9/EeC9mQk6j4tEmMhoL_Jm_jgBt3Q74ZgJ2kVT0_J7ASh3xA?e=koRlzA])  
 
 ### **Option 1: Download ZIP from GitHub**  
 1. Click the green **"Code"** button at the top of this repository.  
