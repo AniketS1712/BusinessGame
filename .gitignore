@@ -46,5 +46,8 @@ app.*.map.json
 
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
+key.properties
+*.jks
+*.keystore
 /linux/flutter/ephemeral/
 /windows/flutter/ephemeral/

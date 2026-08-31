@@ -1,4 +1,4 @@
-import 'package:business_game/screens/login.dart';
+import 'package:business_game/screens/main_menu.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -53,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen>
       Navigator.pushReplacement(
         // ignore: use_build_context_synchronously
         context,
-        MaterialPageRoute(builder: (context) => const Login()),
+        MaterialPageRoute(builder: (context) => const MainMenu()),
       );
     });
   }

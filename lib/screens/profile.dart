@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -11,13 +9,10 @@ class Profile extends StatefulWidget {
 }
 
 class ProfileState extends State<Profile> {
-  String uid = FirebaseAuth.instance.currentUser?.uid ?? '';
-  String name = '';
-  String profilePicUrl = '';
-  String gender = "";
+  String name = 'Player';
+  String profilePicUrl = 'assets/images/avatar/avatar1.jpg';
   int totalGamesPlayed = 0;
   int totalGamesWon = 0;
-  // ignore: unused_field
   bool _isLoading = true;
 
   final List<String> availableAvatars = [
@@ -28,33 +23,63 @@ class ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    _fetchUserDetails();
+    _loadProfileData();
   }
 
-  Future<void> _fetchUserDetails() async {
-    if (uid.isEmpty) {
-      setState(() => _isLoading = false);
-      return;
-    }
+  Future<void> _loadProfileData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      name = prefs.getString('player_name') ?? 'Player';
+      profilePicUrl = prefs.getString('player_avatar') ?? availableAvatars.first;
+      totalGamesPlayed = prefs.getInt('total_games_played') ?? 0;
+      totalGamesWon = prefs.getInt('total_games_won') ?? 0;
+      _isLoading = false;
+    });
+  }
 
-    try {
-      DocumentSnapshot userDoc =
-          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+  Future<void> _saveName(String newName) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('player_name', newName);
+    setState(() {
+      name = newName;
+    });
+  }
 
-      if (userDoc.exists) {
-        setState(() {
-          name = userDoc['name'];
-          profilePicUrl = userDoc['avatar'] ?? '';
-          gender = userDoc['gender'] ?? '';
-          totalGamesPlayed = userDoc['totalGamesPlayed'] ?? 0;
-          totalGamesWon = userDoc['totalGamesWon'] ?? 0;
-        });
-      }
-    } catch (e) {
-      debugPrint("Error fetching user data: $e");
-    } finally {
-      setState(() => _isLoading = false);
-    }
+  Future<void> _updateProfilePic(String avatar) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('player_avatar', avatar);
+    setState(() {
+      profilePicUrl = avatar;
+    });
+  }
+
+  void _showEditNameDialog() {
+    final controller = TextEditingController(text: name);
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Edit Profile Name"),
+        content: TextField(
+          controller: controller,
+          decoration: const InputDecoration(hintText: "Enter display name"),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () {
+              if (controller.text.trim().isNotEmpty) {
+                _saveName(controller.text.trim());
+              }
+              Navigator.pop(context);
+            },
+            child: const Text("Save"),
+          ),
+        ],
+      ),
+    );
   }
 
   void _showAvatarSelectionSheet() {
@@ -94,24 +119,15 @@ class ProfileState extends State<Profile> {
     );
   }
 
-  Future<void> _updateProfilePic(String avatar) async {
-    if (uid.isEmpty) return;
-
-    try {
-      await FirebaseFirestore.instance.collection('users').doc(uid).update({
-        'avatar': avatar,
-      });
-
-      setState(() {
-        profilePicUrl = avatar;
-      });
-    } catch (e) {
-      debugPrint("Error updating profile picture: $e");
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Scaffold(
+        backgroundColor: Colors.black,
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -169,7 +185,6 @@ class ProfileState extends State<Profile> {
     );
   }
 
-  // 🔹 Gradient Background
   BoxDecoration _buildGradientBackground() {
     return const BoxDecoration(
       gradient: LinearGradient(
@@ -180,7 +195,6 @@ class ProfileState extends State<Profile> {
     );
   }
 
-  // 🔹 Profile Card
   Widget _buildProfileCard() {
     return Card(
       elevation: 6,
@@ -223,38 +237,18 @@ class ProfileState extends State<Profile> {
               ),
             ),
             const SizedBox(height: 12),
-
-            // Name
-            Text(
-              name,
-              style: const TextStyle(fontSize: 20, color: Colors.white),
-            ),
-
-            // Gender
-            Text(
-              "Gender: $gender",
-              style: const TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-
-            // UID (Copyable)
-            GestureDetector(
-              onTap: () {
-                Clipboard.setData(ClipboardData(text: uid));
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("UID copied to clipboard!")),
-                );
-              },
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    "UID: $uid",
-                    style: const TextStyle(fontSize: 14, color: Colors.grey),
-                  ),
-                  const SizedBox(width: 6),
-                  const Icon(Icons.copy, size: 14, color: Colors.grey),
-                ],
-              ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  name,
+                  style: const TextStyle(fontSize: 20, color: Colors.white),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.edit, size: 18, color: Colors.grey),
+                  onPressed: _showEditNameDialog,
+                ),
+              ],
             ),
           ],
         ),
@@ -262,7 +256,6 @@ class ProfileState extends State<Profile> {
     );
   }
 
-  // 🔹 Game Stats Section
   Widget _buildGameStats() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),

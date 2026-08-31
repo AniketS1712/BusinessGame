@@ -1,4 +1,5 @@
 import 'package:business_game/controllers/game_controller.dart';
+import 'package:business_game/screens/main_menu.dart';
 import 'package:business_game/ui/business_board.dart';
 import 'package:business_game/ui/player_area.dart';
 import 'package:flutter/material.dart';
@@ -7,25 +8,73 @@ import 'package:provider/provider.dart';
 class GameScreen extends StatelessWidget {
   const GameScreen({super.key});
 
+  void _showExitConfirmation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Quit Game?"),
+        content: const Text(
+            "Are you sure you want to quit? Current game progress will be lost."),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const MainMenu()),
+                (route) => false,
+              );
+            },
+            child: const Text("Quit", style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final gameController = Provider.of<GameController>(context);
 
     return PopScope(
       canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) {
+          _showExitConfirmation(context);
+        }
+      },
       child: Scaffold(
         body: Stack(
           children: [
             _buildGradientBackground(),
-            LayoutBuilder(
-              builder: (context, constraints) {
-                bool isWideScreen = constraints.maxWidth > 600;
-                bool isTallScreen = constraints.maxHeight > 700;
+            SafeArea(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  bool isWideScreen = constraints.maxWidth > 600;
+                  bool isTallScreen = constraints.maxHeight > 700;
 
-                return isWideScreen
-                    ? _buildWideScreenLayout(gameController)
-                    : _buildPortraitLayout(gameController, isTallScreen);
-              },
+                  return isWideScreen
+                      ? _buildWideScreenLayout(gameController)
+                      : _buildPortraitLayout(gameController, isTallScreen);
+                },
+              ),
+            ),
+            Positioned(
+              top: 30,
+              left: 10,
+              child: SafeArea(
+                child: CircleAvatar(
+                  backgroundColor: Colors.black.withAlpha(160),
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    onPressed: () => _showExitConfirmation(context),
+                  ),
+                ),
+              ),
             ),
           ],
         ),

@@ -1,4 +1,4 @@
-import 'package:business_game/screens/gamescreen.dart';
+import 'package:business_game/screens/game_setup_screen.dart';
 import 'package:business_game/screens/about.dart';
 import 'package:business_game/screens/profile.dart';
 import 'package:business_game/screens/settings.dart';
@@ -27,11 +27,10 @@ class MainMenu extends StatelessWidget {
                   _iconButton(Icons.person, () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Profile()),
+                      MaterialPageRoute(builder: (context) => const Profile()),
                     );
                   }),
                   const Spacer(),
-                  _iconButton(Icons.message_outlined, () {}),
                   _iconButton(Icons.settings, () {
                     Navigator.push(
                       context,
@@ -75,10 +74,8 @@ class MainMenu extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const GameScreen()));
+                                            const GameSetupScreen()));
                               }),
-                              const SizedBox(width: 20),
-                              _menuButton("Friends", Icons.group, () {}),
                               const SizedBox(width: 20),
                               _menuButton("About", Icons.info_outline, () {
                                 Navigator.push(
@@ -97,9 +94,8 @@ class MainMenu extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const GameScreen()));
+                                            const GameSetupScreen()));
                               }),
-                              _menuButton("Friends", Icons.group, () {}),
                               _menuButton("About", Icons.info_outline, () {
                                 Navigator.push(
                                   context,

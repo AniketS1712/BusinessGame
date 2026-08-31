@@ -34,7 +34,7 @@ class PlayerToken extends StatelessWidget {
       children: players
           .asMap()
           .map((index, player) {
-            final mappedIndex = (index + 1) % 4;
+            final mappedIndex = (index + 1) % players.length;
             final position = TokenPosition.getPosition(
                 player.currentTileIndex, boardSize, index);
 

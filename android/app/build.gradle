@@ -1,15 +1,18 @@
 plugins {
     id "com.android.application"
-    // START: FlutterFire Configuration
-    id 'com.google.gms.google-services'
-    // END: FlutterFire Configuration
     id "kotlin-android"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
-    namespace = "com.example.business_game"
+    namespace = "com.aniket.businessgame"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -23,12 +26,8 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.business_game"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
-        // minSdk = flutter.minSdkVersion
-        minSdkVersion = 23
+        applicationId = "com.aniket.businessgame"
+        minSdkVersion = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -36,17 +35,27 @@ android {
 
     signingConfigs {
         release {
-            storeFile file(project.property("MY_STORE_FILE"))
-            storePassword project.property("MY_STORE_PASSWORD")
-            keyAlias project.property("MY_KEY_ALIAS")
-            keyPassword project.property("MY_KEY_PASSWORD")
+            if (keystorePropertiesFile.exists()) {
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+            } else if (project.hasProperty('MY_STORE_FILE')) {
+                storeFile file(project.property('MY_STORE_FILE'))
+                storePassword project.property('MY_STORE_PASSWORD')
+                keyAlias project.property('MY_KEY_ALIAS')
+                keyPassword project.property('MY_KEY_PASSWORD')
+            }
         }
     }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.debug
-            signingConfig signingConfigs.release
+            if (keystorePropertiesFile.exists() || project.hasProperty('MY_STORE_FILE')) {
+                signingConfig signingConfigs.release
+            } else {
+                signingConfig signingConfigs.debug
+            }
             minifyEnabled false
             shrinkResources false
         }
